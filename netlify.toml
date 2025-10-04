@@ -1,8 +1,9 @@
 [build]
-  functions = "netlify/functions"   # де зберігаються твої функції
-  publish = "my-helper/build"       # сюди Netlify буде складати фронтенд (React)
+  command = ""                     
+  publish = ""                     
+  functions = "netlify/functions"  # директорія з функціями
 
 [dev]
-  functions = "netlify/functions"   # локально теж шукати функції тут
-  publish = "my-helper/build"       # фронтенд збирається тут
-  port = 8888                       # локальний порт для netlify dev
+  functions = "netlify/functions"  # Netlify dev шукатиме функції тут
+  publish = ""                     
+  port = 8888                      # локальний порт

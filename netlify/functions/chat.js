@@ -1,7 +1,7 @@
 export async function handler(event) {
   const allowedOrigins = [
     "http://localhost:3000",
-    "https://<твій-нік>.github.io" // 👉 заміни на реальну адресу фронта
+    "https://skozovskij.github.io"
   ];
 
   const origin = event.headers.origin;
@@ -31,24 +31,11 @@ export async function handler(event) {
     }
 
     const token = process.env.HF_API_KEY;
-    console.log(
-      "HF_API_KEY:",
-      token ? `✅ знайдено (${token.slice(0, 6)}...${token.slice(-4)})` : "❌ не знайдено"
-    );
 
     const body = {
       inputs: `<s>[INST] ${message} [/INST]`,
       parameters: { max_new_tokens: 200, temperature: 0.7 },
     };
-
-    console.log("Запит до HuggingFace:", {
-      url: "https://api-inference.huggingface.co/models/tiiuae/falcon-7b-instruct",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token ? `Bearer ${token.slice(0, 8)}...` : "❌ немає",
-      },
-      body,
-    });
 
     const apiRes = await fetch(
       "https://api-inference.huggingface.co/models/tiiuae/falcon-7b-instruct",
@@ -63,7 +50,6 @@ export async function handler(event) {
     );
 
     const data = await apiRes.json();
-    console.log("Відповідь від HuggingFace:", data);
 
     if (data.error) {
       return {
@@ -84,8 +70,6 @@ export async function handler(event) {
       body: JSON.stringify({ reply }),
     };
   } catch (err) {
-    console.error("❌ Помилка сервера:", err);
-
     return {
       statusCode: 500,
       headers: corsHeaders,
